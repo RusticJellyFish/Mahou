@@ -18,6 +18,6 @@ class Tile:
 
     def _update(self, delta):
         self.timer += delta
-        if self.timer >= 1000:
-            self.timer -= 1000
+        if self.timer >= 1:
+            self.timer -= 1
 #            self.visible = not self.visible

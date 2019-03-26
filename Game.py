@@ -1,10 +1,12 @@
 from asciimatics.screen import Screen
 from asciimatics.event import KeyboardEvent
 import pygame
+import time
 
 from Panel import Panel
 from HorizontalLayout import HorizontalLayout
 from VerticalLayout import VerticalLayout
+from TextWidget import TextWidget
 
 from Map import Map
 from Player import Player
@@ -16,9 +18,14 @@ myMap.center_on_player(myPlayer)
 myMap.set_player(myPlayer)
 
 masterLayout = HorizontalLayout(0, 0)
-mapPanel = Panel(0, 0, 10, 10)
+mapPanel = Panel(0, 0, myMap.displayHeight, myMap.displayWidth * 2)
 mapPanel.widget = myMap
 masterLayout.add_panel(mapPanel)
+
+myText = TextWidget(["Hello", "This is my text widget", "", "Last Line"])
+textPanel = Panel(0, 0, myText.height, myText.longestLine)
+textPanel.widget = myText
+masterLayout.add_panel(textPanel)
 
 def handle_input(_screen):
 
@@ -80,15 +87,20 @@ def update_map(delta, m):
 
 def run(_screen):
     pygame.init()
-    clock = pygame.time.Clock()
-    clock.tick()
+#    clock = pygame.time.Clock()
+#    clock.tick()
+    dt = 0
+    t0 = time.time()
     
     while(True):
-        clock.tick(15)
+#        clock.tick(15)
+        t1 = time.time()
+        dt = ( t1 - t0 )
+        t0 = t1
         handle_input(_screen)
-        update_map(clock.get_time(), myMap)
+        update_map(dt, myMap)
 #        render_map_partial(_screen, myMap)
-        mapPanel.display(_screen)
-#        masterLayout.display(_screen)
+#        mapPanel.display(_screen)
+        masterLayout.display(_screen)
         _screen.refresh()
 Screen.wrapper(run)
